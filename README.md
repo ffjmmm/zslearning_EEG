@@ -1,1 +1,1 @@
-# zslearning_EEG
+# Zero-shot learning for EEG
