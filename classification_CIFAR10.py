@@ -7,9 +7,11 @@ import torchvision.transforms as transforms
 import numpy as np
 import matplotlib.pyplot as plt
 
-BATCH_SIZE = 32
+from sklearn.manifold import TSNE
+
+BATCH_SIZE = 64
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-EPOCH = 10
+EPOCH = 5
 LR = 0.001
 
 transform = transforms.Compose(
@@ -80,8 +82,8 @@ class CNN(nn.Module):
         x = self.conv2(x)
         x = x.view(-1, 32 * 64)
         x = self.fc1(x)
-        x = self.fc2(x)
-        return x
+        out = self.fc2(x)
+        return x, out
 
 
 cnn = CNN().to(device)
@@ -93,7 +95,7 @@ for epoch in range(EPOCH):
     for step, (data, label) in enumerate(dataloader_train):
         data, label = data.to(device), label.to(device)
         label = F.one_hot(label, num_classes=10).float()
-        out = cnn(data)
+        _, out = cnn(data)
         loss = loss_func(out, label)
         optimizer.zero_grad()
         loss.backward()
@@ -104,7 +106,8 @@ for epoch in range(EPOCH):
     for step, (data, label) in enumerate(dataloader_test):
         data = data.to(device)
         label = F.one_hot(label, num_classes=10).float()
-        out = cnn(data).cpu()
+        _, out = cnn(data)
+        out = out.cpu()
         pred = torch.max(out, 1)[1].data.numpy()
         label = torch.max(label, 1)[1].data.numpy()
         accuracy = float((pred == label).astype(int).sum()) / float(len(label))
@@ -112,3 +115,18 @@ for epoch in range(EPOCH):
     acc /= (step + 1)
 
     print('%d: %.4f %.4f' % (epoch, train_loss, acc))
+
+    fig = plt.figure(figsize=(7, 7))
+    ax = fig.subplots()
+    ax.set_title('Epoch %d' % epoch)
+    tsne = TSNE(n_components=2)
+
+    for data, label in dataloader_test:
+        data = data.to(device)
+        x, _ = cnn(data)
+        x = x.cpu().data.numpy()
+        x = tsne.fit_transform(x)
+        ax.scatter(x[:, 0], x[:, 1], c=label, cmap='rainbow')
+        break
+
+    plt.show()
