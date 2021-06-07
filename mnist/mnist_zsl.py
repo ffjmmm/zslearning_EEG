@@ -19,7 +19,7 @@ dataloader_test = DataLoader(dataset=data_test, batch_size=BATCH_SIZE, shuffle=F
 
 cnn = utils.CNN_MNIST(ZERO_SHOT)
 model_name = 'mnist_9_cnn.pkl'
-cnn.load_state_dict(torch.load('./model/' + model_name))
+cnn.load_state_dict(torch.load('../model/' + model_name))
 cnn.to(device)
 
 cnn.eval()

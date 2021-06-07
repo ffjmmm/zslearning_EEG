@@ -19,7 +19,7 @@ dataloader_train = DataLoader(dataset=data_train, batch_size=BATCH_SIZE, shuffle
 
 cnn = utils.CNN_MNIST(ZERO_SHOT)
 model_name = 'mnist_9_cnn.pkl' if ZERO_SHOT else 'mnist_cnn.pkl'
-cnn.load_state_dict(torch.load('./model/' + model_name))
+cnn.load_state_dict(torch.load('../model/' + model_name))
 cnn.to(device)
 
 feature_x = []
@@ -44,10 +44,10 @@ print(array_x.shape)
 print(array_label.shape)
 
 if ZERO_SHOT:
-    np.save('./features/mnist_9_out.npy', array_out)
-    np.save('./features/mnist_9_x.npy', array_x)
-    np.save('./features/mnist_9_label.npy', array_label)
+    np.save('../features/mnist_9_out.npy', array_out)
+    np.save('../features/mnist_9_x.npy', array_x)
+    np.save('../features/mnist_9_label.npy', array_label)
 else:
-    np.save('./features/mnist_out.npy', array_out)
-    np.save('./features/mnist_x.npy', array_x)
-    np.save('./features/mnist_label.npy', array_label)
+    np.save('../features/mnist_out.npy', array_out)
+    np.save('../features/mnist_x.npy', array_x)
+    np.save('../features/mnist_label.npy', array_label)

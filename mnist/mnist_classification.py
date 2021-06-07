@@ -55,19 +55,4 @@ for epoch in range(EPOCH):
 
 print('model save ...')
 model_name = 'mnist_9_cnn.pkl' if ZERO_SHOT else 'mnist_cnn.pkl'
-torch.save(cnn.state_dict(), './model/' + model_name)
-
-    # fig = plt.figure(figsize=(7, 7))
-    # ax = fig.subplots()
-    # ax.set_title('Epoch %d' % epoch)
-    # tsne = TSNE(n_components=2)
-    #
-    # for data, label in dataloader_test:
-    #     data = data.to(device)
-    #     x, _ = cnn(data)
-    #     x = x.cpu().data.numpy()
-    #     x = tsne.fit_transform(x)
-    #     ax.scatter(x[:, 0], x[:, 1], c=label, cmap='rainbow')
-    #     break
-    #
-    # plt.show()
+torch.save(cnn.state_dict(), '../model/' + model_name)

@@ -14,7 +14,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
 print('load data ...')
-x = np.load('./features/mnist_zsl_x.npy')
+x = np.load('../features/mnist_zsl_x.npy')
 
 data_test = utils.MNIST_1(root='./data', train=False, transform=transforms.ToTensor())
 dataloader_test = DataLoader(dataset=data_test, batch_size=BATCH_SIZE, shuffle=False)
@@ -22,7 +22,7 @@ dataloader_test = DataLoader(dataset=data_test, batch_size=BATCH_SIZE, shuffle=F
 print('load model ...')
 cnn = utils.CNN_MNIST(True)
 model_name = 'mnist_9_cnn.pkl'
-cnn.load_state_dict(torch.load('./model/' + model_name))
+cnn.load_state_dict(torch.load('../model/' + model_name))
 cnn.to(device)
 
 tsne = TSNE(n_components=2)
@@ -49,8 +49,8 @@ for data, _ in dataloader_test:
 
 x_all = np.concatenate(x_all, axis=0)
 scores_all = np.concatenate(scores_all, axis=0)
-np.save('./features/mnist_loop_x.npy', x_all)
-np.save('./features/mnist_loop_scores.npy', scores_all)
+np.save('../features/mnist_loop_x.npy', x_all)
+np.save('../features/mnist_loop_scores.npy', scores_all)
 
 n_ = len(x_all)
 
